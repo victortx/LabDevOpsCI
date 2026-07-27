@@ -28,41 +28,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Create CI environment file
-        run: |
-          cat > .env <<EOF
-          PORT=3000
-          DB_HOST=postgres
-          DB_PORT=5432
-          DB_NAME=devops_lab
-          DB_USER=devops_user
-          DB_PASSWORD=devops_password
-          EOF
-
       - name: Build Docker image
         run: docker build -t nginx-parcial-proxy:ci .
 
-      - name: Start Docker Compose stack
-        run: docker compose up -d --build
+      - name: Start stack
+        run: ./scripts/ci-up.sh
 
-      - name: Show running containers
+      - name: Check containers
         run: docker compose ps
 
-      - name: Wait for API healthcheck
-        run: |
-          for i in {1..20}; do
-            if curl -f http://localhost/health; then
-              echo "API is healthy"
-              exit 0
-            fi
-
-            echo "Waiting for API..."
-            sleep 5
-          done
-
-          echo "API did not become healthy"
-          docker compose logs
-          exit 1
+      - name: Run healthcheck
+        run: ./scripts/healthcheck.sh
 
       - name: Test expenses endpoint
         run: curl -f http://localhost/api/expenses
@@ -71,6 +47,6 @@ jobs:
         if: failure()
         run: docker compose logs
 
-      - name: Stop Docker Compose stack
+      - name: Stop stack
         if: always()
-        run: docker compose down -v
+        run: ./scripts/ci-down.sh 
