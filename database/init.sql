@@ -5,10 +5,9 @@ CREATE TABLE IF NOT EXISTS expenses (
     category VARCHAR(100) NOT NULL
 );
 
-INSERT INTO expenses (name, role)
+INSERT INTO expenses (description, amount, category)
 VALUES
-    ('Internet', '300.00', 'Servicios'),
-    ('AWS lab', '50.00', 'Cloud'),
-    ('Curso Docker', '150.00', 'Education'),
-    ('Dominio Web', '120.00', 'Infraestructura')
-ON CONFLICT DO NOTHING;
+    ('Internet', 300.00, 'Servicios'),
+    ('AWS Lab', 50.00, 'Cloud'),
+    ('Curso Docker', 150.00, 'Educación'),
+    ('Dominio Web', 120.00, 'Infraestructura');
