@@ -24,10 +24,22 @@ jobs:
           docker compose version
 
       - name: Prepare environment file
+        env:
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: |
-          if [ ! -f ".env" ]; then
-            cp .env.example .env
+          if [ -z "$DB_PASSWORD" ]; then
+            echo "ERROR: DB_PASSWORD secret is missing."
+            exit 1
           fi
+
+          cat > .env <<EOF
+          PORT=3000
+          DB_HOST=postgres
+          DB_PORT=5432
+          DB_NAME=devops_lab
+          DB_USER=devops_user
+          DB_PASSWORD=$DB_PASSWORD
+          EOF
 
       - name: Run deployment
         run: ./scripts/deploy.sh

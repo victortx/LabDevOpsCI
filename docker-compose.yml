@@ -29,9 +29,9 @@ services:
     image: postgres:16-alpine
     container_name: devops_lab_postgres
     environment:
-      POSTGRES_DB: devops_lab
-      POSTGRES_USER: devops_user
-      POSTGRES_PASSWORD: devops_password
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
