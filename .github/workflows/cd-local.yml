@@ -1,0 +1,44 @@
+name: CD Local Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-local:
+    name: Deploy to local Ubuntu runner
+    runs-on: [self-hosted, devops-lab]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Show runner info
+        run: |
+          whoami
+          hostname
+          pwd
+          docker --version
+          docker compose version
+
+      - name: Prepare environment file
+        run: |
+          if [ ! -f ".env" ]; then
+            cp .env.example .env
+          fi
+
+      - name: Run deployment
+        run: ./scripts/deploy.sh
+
+      - name: Validate deployment
+        run: curl -f http://localhost/health
+
+      - name: Show containers
+        if: always()
+        run: docker compose ps
+
+      - name: Show logs on failure
+        if: failure()
+        run: docker compose logs
