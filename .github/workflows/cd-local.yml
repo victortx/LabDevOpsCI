@@ -10,6 +10,7 @@ jobs:
   test-secrets:
     name: Test Secrets and Variables
     runs-on: [self-hosted, devops-lab]
+    environment: development
 
     steps:
       - name: Show configuration
