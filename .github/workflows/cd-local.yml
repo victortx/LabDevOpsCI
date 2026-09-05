@@ -7,6 +7,27 @@ on:
       - main
 
 jobs:
+  test-secrets:
+    name: Test Secrets and Variables
+    runs-on: [self-hosted, devops-lab]
+
+    steps:
+      - name: Show configuration
+        run: |
+          echo "APP_PORT=${{ vars.APP_PORT }}"
+          echo "NODE_ENV=${{ vars.NODE_ENV }}"
+
+      - name: Check DB password exists
+        env:
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: |
+          if [ -n "$DB_PASSWORD" ]; then
+            echo "DB_PASSWORD is configured"
+          else
+            echo "DB_PASSWORD is NOT configured"
+            exit 1
+          fi
+
   deploy-local:
     name: Deploy to local Ubuntu runner
     runs-on: [self-hosted, devops-lab]
