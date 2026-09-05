@@ -31,6 +31,7 @@ jobs:
   deploy-local:
     name: Deploy to local Ubuntu runner
     runs-on: [self-hosted, devops-lab]
+    environment: development
 
     steps:
       - name: Checkout repository
