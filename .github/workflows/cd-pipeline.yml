@@ -19,3 +19,22 @@ jobs:
       - name: Run tests
         run: |
           echo "Running tests..."
+
+  build:
+    name: Build Application
+    runs-on: [self-hosted, devops-lab]
+    needs: test
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create build
+        run: |
+          mkdir -p build
+          echo "Application build generated successfully" > build/build-info.txt
+
+      - name: Show build
+        run: |
+          ls -la build
+          cat build/build-info.txt
