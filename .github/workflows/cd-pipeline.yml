@@ -44,3 +44,21 @@ jobs:
         with:
           name: build-output
           path: build/
+
+  deploy-development:
+    name: Deploy Development
+    runs-on: [self-hosted, devops-lab]
+    needs: build
+
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+
+      - name: Verify deployment files
+        run: |
+          echo "Development deployment"
+          ls -la
+          ls -la build
+          cat build/build-info.txt
