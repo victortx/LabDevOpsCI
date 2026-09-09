@@ -29,17 +29,6 @@ jobs:
             exit 1
           fi
 
-  test-production:
-    name: Test Production Approval
-    runs-on: [self-hosted, devops-lab]
-    environment: production
-
-    steps:
-      - name: Production approved
-        run: |
-          echo "Production deployment approved"
-          echo "This is only a test"
-
   deploy-local:
     name: Deploy to local Ubuntu runner
     runs-on: [self-hosted, devops-lab]
