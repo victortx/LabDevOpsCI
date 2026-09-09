@@ -13,3 +13,9 @@ jobs:
         run: |
           mkdir -p build
           echo "Build generated successfully" > build/build-info.txt
+      
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: build/
