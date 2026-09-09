@@ -62,3 +62,13 @@ jobs:
           ls -la
           ls -la build
           cat build/build-info.txt
+
+  validate-development:
+    name: Validate Development
+    runs-on: [self-hosted, devops-lab]
+    needs: deploy-development
+
+    steps:
+      - name: Check application health
+        run: |
+          curl -f http://localhost/health
