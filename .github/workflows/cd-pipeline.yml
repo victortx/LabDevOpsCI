@@ -72,3 +72,22 @@ jobs:
       - name: Check application health
         run: |
           curl -f http://localhost/health
+
+  deploy-production:
+    name: Deploy Production
+    runs-on: [self-hosted, devops-lab]
+    needs: validate-development
+    environment: production
+
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+
+      - name: Deploy to production
+        run: |
+          echo "Deploying to production..."
+          ls -la
+          ls -la build
+          cat build/build-info.txt
